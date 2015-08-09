@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
-
 var quizController = require('../controllers/quiz_controller.js');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Quiz' });
+  res.render('index', { titulo: "Quiz" });
+
 });
+
+
+
 
 /* Quiz: question */
 router.get('/quizes/question', quizController.question );
