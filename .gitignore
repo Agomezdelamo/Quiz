@@ -1,6 +1,7 @@
-node_modules
+/node_modules
+npm-debug.log
 .DS_Store
 npm-debug.log
 quiz.sqlite
 public/media
-.env
+/*.env
