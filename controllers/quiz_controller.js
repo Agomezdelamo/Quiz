@@ -33,6 +33,7 @@ exports.search = function(req, res, next) {
 			
 };
 
+
 // GET  /quizes/:id
 exports.show = function(req, res) {
 	res.render('quizes/show', {quiz: req.quiz});
