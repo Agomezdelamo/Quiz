@@ -26,7 +26,7 @@ var sequelize = new Sequelize(DB_name, user, pwd,
   }      
 );
 
-// Usar BBDD SQLite o Postgres
+// Usar BBDD SQLite o Postgres 
 var sequelize = new Sequelize(null, null, null, 
   { dialect:  "sqlite",
     storage:  "quiz.sqlite"
@@ -34,7 +34,10 @@ var sequelize = new Sequelize(null, null, null,
 );
 
 // Importar definicion de la tabla Quiz
+//importo el orm que tiene el modelo de su ruta en el ordenador.
 var quiz_path = path.join(__dirname,'quiz');
+//uso esa ruta para decirle a sequelize el orm que tiene que usar para cruzarlo
+//con la base de datos.
 var Quiz = sequelize.import(quiz_path);
 
 // exportar tablas
@@ -48,9 +51,12 @@ exports.Quiz = Quiz;
 			Quiz.create({
 				pregunta: 'Capital de Italia',
 				respuesta: 'Roma'
-			})
+				});
+			Quiz.create({
+				pregunta: 'Capital de Portugal',
+				respuesta: 'Lisboa'
+				})
 			.then(function(){console.log('Base de datos inicializada')});
-			
 		};
 	});
 });
