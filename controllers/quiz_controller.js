@@ -17,7 +17,10 @@ exports.load = function(req, res, next, quizId) {
 
 // GET  /quizes/index
 exports.index = function(req, res) {
-      res.render('quizes/index', {quizes: " "});
+	models.Quiz.findAll().then(
+		function(quizes){
+			res.render('quizes/index', {quizes: quizes});
+		}).catch(function(error) {next(error);})
 };
 
 // GET  /quizes/index
@@ -49,4 +52,22 @@ exports.answer = function(req, res) {
 		res.render('quizes/answer', { quiz: req.quiz , respuesta: resultado });
 };
 
+// GET /quizes/new
+exports.new = function(req,res) {
+	var quiz = models.Quiz.build(//crea un objeto quiz solo para renderizar vistas, no es persistente, no se queda en base de datos.
+	{pregunta: "Pregunta", respuesta: "Respuesta"}
+	);
+	res.render('quizes/new', {quiz: quiz});
+};
 
+// POST /quizes/create
+exports.create = function(req,res) {
+	//ESTE CONTROLADOR genera el objeto quiz con models.Quiz.build
+	//incializandolo con los parámetros enviados desde el formulario, 
+	//que están accesibles en req.body.quiz.
+	var quiz = models.Quiz.build(req.body.quiz);
+	//y lo guardo en DB, tanto pregunta como respuesta.
+	quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
+			res.redirect('/quizes');
+	})	//redirección http (url relativo) lista de preguntas PORQUE NO TENGO VISTA ASOCIADA.
+};
