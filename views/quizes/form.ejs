@@ -1,4 +1,19 @@
-﻿<label for="preg" class="rem">Pregunta:</label>
+﻿<!--cuando en los names del formulario metemos quiz[name] estamos metiendole al req.body
+un objeto simple llamado quiz, con una propiedad que es "name" y un valor que es el
+que hemos elegido o escrito-->
+
+<label for="temados" class="rem">Tema:</label>
+<select name="quiz[temaName]" id="temados">
+<% var t = quiz.tema; %> 
+<% var x; for (x=0; x < tema.length; x++) { %> 
+<% if(tema[x] === quiz.tema) { %>	
+<option value="<%= tema[x] %>" selected><%= tema[x] %></option>
+<% } else { %>	
+<option value="<%= tema[x] %>" ><%= tema[x] %></option>
+<% } %>
+<% } %>
+</select></p>
+<label for="preg" class="rem">Pregunta:</label>
 <p><input type="text" id="preg" name="quiz[pregunta]" value="<%= quiz.pregunta %>"/></p>
 <label for="resp" class="rem">Respuesta:</label>
 <p><input type="text" id="resp" name="quiz[respuesta]" value="<%= quiz.respuesta %>"/></p>
