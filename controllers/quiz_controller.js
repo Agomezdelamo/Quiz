@@ -5,7 +5,14 @@ var tm = ["Otro", "Humanidades", "Ocio", "Ciencia", "Tecnología" ];
 // Autoload - factoriza el código si ruta incluye :quizId
 /*vamos, que si la peticion incluye una variable en la url :quizId lo pasa al objeto request como parametro para que guarde el objeto en una propiedad */
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.find(quizId).then(function(quiz){
+	models.Quiz.find({
+		//query que hago para el quiz que corresponda al numero de quizId
+		//incluya todos los comentarios que en su columna key foreign tengan
+		//el identificador de esa pregunta, de esta forma ya esta disponible
+		//la propiedad comment con un array que tiene todos los comentarios de esa pregunta, cada vez que carguemos, por ejemplo para pintarlos en la vista.
+		where: { id: Number(quizId)},
+		include: [{ model: models.Comment }]
+	}).then(function(quiz){
 		if(quiz) {
 			//autoload realiza la búsqueda en la tabla antes de invocar el controlador, dejando el objeto en req.quiz
 			req.quiz = quiz;

@@ -33,15 +33,26 @@ var sequelize = new Sequelize(null, null, null,
   }      
 );
 
-// Importar definicion de la tabla Quiz
-//importo el orm que tiene el modelo de su ruta en el ordenador.
+/** IMPORTO LA DEFINICIÓN DE LA TABLA QUIZ EN EL OBJETO MAPEADO (ORM) **/
+//ruta del modelo.
 var quiz_path = path.join(__dirname,'quiz');
-//uso esa ruta para decirle a sequelize el orm que tiene que usar para cruzarlo
-//con la base de datos.
+//importo el modelo de esa ruta a sequelize para genere el ORM(mapeo objeto-tabla relacional) que sea puente entre el controlador y la DB.
 var Quiz = sequelize.import(quiz_path);
+//Lo mismo para el resto de tablas.
+var comment_path = path.join(__dirname,'comment');
+var Comment = sequelize.import(comment_path);
 
-// exportar tablas
+/**ESTABLEZCO LAS RELACIONES ENTRE LAS TABLAS **/
+//N-a-1
+//Los comentarios pertenecen a una sola tabla Quiz.
+Comment.belongsTo(Quiz);
+//1-a-N
+//Una sola tabla quiz puede tener muchos comentarios
+Quiz.hasMany(Comment);
+
+/** EXPORTO LAS TABLAS PARA PODER TRABAJAR EN EL CONTROLADOR CON ELLA **/
 exports.Quiz = Quiz;
+exports.Comment = Comment;
 
 // sequelize.sync() inicializa tabla de preguntas en DB
 	sequelize.sync().then(function() {
