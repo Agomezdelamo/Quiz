@@ -75,6 +75,8 @@ exports.create = function(req,res) {
 	//incializandolo con los parámetros enviados desde el formulario, 
 	//que están accesibles en req.body.quiz.	
 	var quiz = models.Quiz.build(req.body.quiz);
+	//me guardo el id del usuario en sessión en el cuerpo de mi petición.
+	req.body.quiz.UserId = req.session.user.id;
 	quiz.tema = req.body.quiz.temaName;
 	//y lo guardo en DB, tanto pregunta como respuesta.
 	quiz.validate().then(function(err){
@@ -82,7 +84,7 @@ exports.create = function(req,res) {
 			res.render('quizes/new', {quiz: quiz, errors: err.errors});
 		}
 		else{
-			quiz.save({fields: ["pregunta", "respuesta","tema"]}).then(function(){
+			quiz.save({fields: ["pregunta", "respuesta","tema","UserId"]}).then(function(){
 			res.redirect('/quizes');
 			//redirección http (url relativo) lista de preguntas PORQUE NO TENGO VISTA ASOCIADA.
 			})
@@ -126,8 +128,7 @@ exports.update = function(req,res) {
 		else {
 			console.log("esto es la DB TEMA", req.quiz.tema);
 			console.log("esto es el body de el formulario", req.body.quiz.temaName);
-			req.quiz	//salvamos los campos que escribamos del objeto quiz del req en la DB.
-			.save( {fields: ["pregunta","respuesta","tema"]})
+			req.quiz.save( {fields: ["pregunta","respuesta","tema"]})
 			.then( function() {res.redirect('/quizes');});
 				//redireccionamos a preguntas con la pregunta modificada.
 

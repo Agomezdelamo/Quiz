@@ -42,7 +42,47 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Autologout despues de 2 minutos
+app.use('/', function(req,res,next){
+
+  var callNext = true;
+  // Si el usuario está logado
+if(req.session.user){
+    var fecha = new Date(); // obtenemos la fecha
+    
+	// Si no hay fecha de ultima acción, se establece
+	if(!req.session.lastActionTime){
+		req.session.lastActionTime = fecha.getTime();
+    }
+	
+	// Si hay fecha de ultima acción, se comprueba que no sea de hace más de 2 minutos
+	else {
+		var secondsDiff = (fecha.getTime() - req.session.lastActionTime)/1000;
+		console.log('secondsDiff: '+secondsDiff);
+		
+		if(secondsDiff < 120){
+			req.session.lastActionTime = fecha.getTime();
+		}
+		else {
+			delete req.session.user;
+			delete req.session.lastActionTime;
+
+			var errors = req.session.errors || {message: ""};
+			req.session.errors = [{"message": 'Sesión caducada. Identificate de nuevo'}];
+
+			res.redirect("/login");
+			callNext = false;
+		}
+	}
+}
+  // Si se ha redirigido al login no se debe pasar por ningún MiddleWare más
+  if(callNext){
+    next();
+  }
+});
+
 app.use('/', routes);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
