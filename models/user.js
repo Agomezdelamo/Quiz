@@ -1,4 +1,4 @@
-﻿// Definicion del modelo de User con validación y encriptación de passwords
+﻿// 1Definicion del modelo de User con validación y encriptación de passwords
 var crypto = require('crypto');
 var key = process.env.PASSWORD_ENCRYPTION_KEY;
 
