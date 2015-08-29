@@ -4,6 +4,7 @@ var router = express.Router();
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
 var sessionController = require('../controllers/session_controller');
+var userController = require('../controllers/user_controller');
 var statisticController = require('../controllers/statistic_controller');
 
 
@@ -20,6 +21,11 @@ router.param('commentId', commentController.load); // autoload :commentID
 router.get('/login',  sessionController.new);     // formulario login
 router.post('/login', sessionController.create);  // crear sesión
 router.get('/logout', sessionController.destroy); // destruir sesión
+
+
+// Crear un usuario
+router.get('/register',  userController.new);  // formulario registro
+router.post('/crear_usuario',  userController.create);  // grabar en base de datos
 
 // Definicion de rutas de estadisticas
 router.get('/quizes/statistics', statisticController.index);
