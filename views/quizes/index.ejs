@@ -1,11 +1,24 @@
 ﻿<table>
   <%if (quizes != " "){ var i; for (i=0; i < quizes.length; i++) { %>        
+  <% if(quizes[i].tema == null) {quizes[i].tema = tema[i]} %>        
 	<tr>
-      <td><a href="/quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
+      <td> <%= quizes[i].tema %></td>
+      <td> <a href="/quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
+	  <%if(session.user){%>
+	 <td><a href="/quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
+      <td>
+		<form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
+			<button type="submit" onClick="return confirm('Borrar: <%= quizes[i].pregunta %>');">
+			borrar
+			</button>
+		</form>
+	  </td>
+	  <%}%>
     </tr> 
   <% }} %>
 	<tr>
 		<td>
+		<!-- ya no tiene sentido la busqueda de preguntas, por eso lo dejo comentado.	
 			<form method="get" action="/quizes">
 				<div>	
 					<label for="busqueda">Busca una pregunta:</label>
@@ -13,6 +26,10 @@
 				<input type="text" name="search" id="busqueda"/>
 				<input type="submit" id="envio"/>
 			</form>
+		-->
 		</td>
 	</tr>
 </table>
+<%if(session.user){%>
+<p><a href="/quizes/new"><button type="button">Crear pregunta</button></p>
+<%}%>
