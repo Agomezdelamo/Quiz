@@ -24,7 +24,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser('Quiz 2015'));
-app.use(session());
+app.app.use(session({
+    secret: "cookie_secret",
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+}));
 
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,16 +51,16 @@ app.use(function(req, res, next) {
 app.use('/', function(req,res,next){
 
   var callNext = true;
-  // Si el usuario est· logado
+  // Si el usuario est√° logado
 if(req.session.user){
     var fecha = new Date(); // obtenemos la fecha
     
-	// Si no hay fecha de ultima acciÛn, se establece
+	// Si no hay fecha de ultima acci√≥n, se establece
 	if(!req.session.lastActionTime){
 		req.session.lastActionTime = fecha.getTime();
     }
 	
-	// Si hay fecha de ultima acciÛn, se comprueba que no sea de hace m·s de 2 minutos
+	// Si hay fecha de ultima acci√≥n, se comprueba que no sea de hace m√°s de 2 minutos
 	else {
 		var secondsDiff = (fecha.getTime() - req.session.lastActionTime)/1000;
 		console.log('secondsDiff: '+secondsDiff);
@@ -68,14 +73,14 @@ if(req.session.user){
 			delete req.session.lastActionTime;
 
 			var errors = req.session.errors || {message: ""};
-			req.session.errors = [{"message": 'SesiÛn caducada. Identificate de nuevo'}];
+			req.session.errors = [{"message": 'Sesi√≥n caducada. Identificate de nuevo'}];
 
 			res.redirect("/login");
 			callNext = false;
 		}
 	}
 }
-  // Si se ha redirigido al login no se debe pasar por ning˙n MiddleWare m·s
+  // Si se ha redirigido al login no se debe pasar por ning√∫n MiddleWare m√°s
   if(callNext){
     next();
   }
