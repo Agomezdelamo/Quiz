@@ -70,14 +70,14 @@ exports.User = User;
 	//then ejecuta el manejador de una tabla
 	User.count().then(function(count) {
 		if(count == 0) {//la tabla solo se inicializa si esta vacia
-			User.bulkCreate( 
+			User.create( 
 			[ {username: 'admin',   password: '1234', isAdmin: true},
 			  {username: 'pepe',   password: '5678'} // el valor por defecto de isAdmin es 'false'
 			] ).then(function(){
         console.log('Base de datos (tabla user) inicializada');
         Quiz.count().then(function (count){
           if(count === 0) {   // la tabla se inicializa solo si está vacía
-            Quiz.bulkCreate( 
+            Quiz.create( 
               [ {pregunta: 'Capital de Italia',   respuesta: 'Roma', UserId: 2}, // estos quizes pertenecen al usuario pepe (2)
                 {pregunta: 'Capital de Portugal', respuesta: 'Lisboa', UserId: 2}
               ]
