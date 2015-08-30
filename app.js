@@ -24,7 +24,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser('Quiz 2015'));
-app.app.use(session({
+app.use(session({
+    secret: "cookie_secret",
     proxy: true,
     resave: true,
     saveUninitialized: true
